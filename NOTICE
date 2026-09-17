@@ -1,0 +1,32 @@
+terraform-auth0-saas-starter
+Copyright 2026 Okta, Inc.
+
+This product includes the following third-party components:
+
+--------------------------------------------------------------------------------
+
+Project: Auth0 Terraform Provider
+Version: ~> 1.51
+Copyright: Copyright (c) Auth0, Inc.
+Repository: https://github.com/auth0/terraform-provider-auth0
+License: Mozilla Public License 2.0 (MPL-2.0)
+https://github.com/auth0/terraform-provider-auth0/blob/main/LICENSE
+
+--------------------------------------------------------------------------------
+
+The following components are licensed under the Mozilla Public License 2.0 (MPL-2.0):
+https://www.mozilla.org/en-US/MPL/2.0/
+
+Project: Hashicorp Time Provider
+Version: ~> 0.10
+Copyright: Copyright (c) HashiCorp, Inc.
+Repository: https://github.com/hashicorp/terraform-provider-time
+License: Mozilla Public License 2.0 (MPL-2.0)
+https://github.com/hashicorp/terraform-provider-time/blob/main/LICENSE
+
+Project: Hashicorp AWS Provider
+Version: ~> 5.0
+Copyright: Copyright (c) HashiCorp, Inc.
+Repository: https://github.com/hashicorp/terraform-provider-aws
+License: Mozilla Public License 2.0 (MPL-2.0)
+https://github.com/hashicorp/terraform-provider-aws/blob/main/LICENSE

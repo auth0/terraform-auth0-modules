@@ -1,0 +1,45 @@
+formatter: markdown table
+
+version: ""
+
+header-from: main.tf
+footer-from: ""
+
+# Each module under modules/ documents itself in its own README. Recursion stays
+# off and CI invokes terraform-docs once per modules/* directory: with it on,
+# terraform-docs also treats the repo root as a module and, finding no
+# BEGIN_TF_DOCS markers there, overwrites the hand-written root README.
+recursive:
+  enabled: false
+
+sections:
+  hide-all: false
+  hide:
+    - providers
+    - requirements
+    - modules
+
+output:
+  file: README.md
+  mode: inject
+  template: |-
+    <!-- BEGIN_TF_DOCS -->
+    {{ .Content }}
+    <!-- END_TF_DOCS -->
+
+sort:
+  enabled: true
+  by: name
+
+settings:
+  anchor: true
+  color: true
+  default: true
+  description: true
+  escape: true
+  hide-empty: true
+  html: true
+  indent: 2
+  required: true
+  sensitive: true
+  type: true

@@ -1,0 +1,20 @@
+# Terraform state and cache
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
+*.tfplan
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Local variable files - may contain secrets
+*.tfvars
+*.tfvars.json
+
+# SAML signing certificates - replace with your IdP's real cert before applying
+examples/b2b-saas-starter/case5/cert.pem
+examples/b2b-saas-starter/case7/cert.pem
+examples/b2b-saas-starter/case8/cert.pem
