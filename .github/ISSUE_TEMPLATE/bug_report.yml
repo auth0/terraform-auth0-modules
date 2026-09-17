@@ -1,0 +1,77 @@
+name: Bug report
+description: Something is not working as expected
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to report a bug. Please do **not** include real Auth0 credentials, tenant domains, or client secrets.
+
+  - type: dropdown
+    id: module
+    attributes:
+      label: Module
+      description: Which module under `modules/` is affected?
+      options:
+        - b2b-saas-starter
+        - other / not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear and concise description of the bug.
+    validations:
+      required: true
+
+  - type: input
+    id: terraform_version
+    attributes:
+      label: Terraform version
+      description: Output of `terraform version`
+      placeholder: "Terraform v1.9.0"
+    validations:
+      required: true
+
+  - type: input
+    id: provider_version
+    attributes:
+      label: Auth0 provider version
+      description: Version of `auth0/auth0` in use
+      placeholder: "1.51.0"
+    validations:
+      required: true
+
+  - type: input
+    id: module_version
+    attributes:
+      label: Module version / commit
+      placeholder: "1.0.0 or abc1234"
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: The smallest HCL configuration that triggers the bug. Replace real values with placeholders.
+      render: hcl
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour / error output
+      render: shell
+    validations:
+      required: true

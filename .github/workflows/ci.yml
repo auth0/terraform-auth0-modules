@@ -1,0 +1,119 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  fmt:
+    name: fmt
+    runs-on: ubuntu-22.04-2cpu-8ram-75ssd
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+      - name: terraform fmt
+        run: terraform fmt -recursive -check -diff
+
+  validate:
+    name: validate
+    runs-on: ubuntu-22.04-2cpu-8ram-75ssd
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+
+      # Every module and example pulls the same auth0 provider, so a shared cache
+      # turns ~15 inits into one download.
+      - name: Configure provider cache
+        run: |
+          echo "TF_PLUGIN_CACHE_DIR=$HOME/.terraform.d/plugin-cache" >> "$GITHUB_ENV"
+          mkdir -p "$HOME/.terraform.d/plugin-cache"
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.terraform.d/plugin-cache
+          key: tf-plugins-${{ hashFiles('**/versions.tf') }}
+          restore-keys: tf-plugins-
+
+      - name: terraform validate
+        run: |
+          set -euo pipefail
+          status=0
+          # Every directory holding .tf files is a validatable root: the modules
+          # themselves plus each example that consumes them.
+          while IFS= read -r dir; do
+            echo "::group::$dir"
+            if terraform -chdir="$dir" init -backend=false -input=false -no-color \
+              && terraform -chdir="$dir" validate -no-color; then
+              echo "ok: $dir"
+            else
+              echo "::error title=terraform validate::failed in $dir"
+              status=1
+            fi
+            echo "::endgroup::"
+          done < <(find modules examples -type f -name '*.tf' -exec dirname {} \; | sort -u)
+          exit $status
+
+  tflint:
+    name: tflint
+    runs-on: ubuntu-22.04-2cpu-8ram-75ssd
+    steps:
+      - uses: actions/checkout@v4
+      - uses: terraform-linters/setup-tflint@v4
+        with:
+          tflint_version: v0.55.0
+
+      - name: tflint init
+        run: tflint --init --config="$PWD/.tflint.hcl"
+
+      # --recursive chdirs into each directory and reads only a .tflint.hcl found
+      # there, so --config with an absolute path is what carries the root ruleset
+      # down. Examples get a looser ruleset; see .tflint.examples.hcl.
+      - name: tflint modules
+        run: tflint --chdir=modules --recursive --config="$PWD/.tflint.hcl"
+
+      - name: tflint examples
+        run: tflint --chdir=examples --recursive --config="$PWD/.tflint.examples.hcl"
+
+  docs:
+    name: docs
+    runs-on: ubuntu-22.04-2cpu-8ram-75ssd
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install terraform-docs
+        run: |
+          set -euo pipefail
+          curl -sSLo /tmp/terraform-docs.tar.gz \
+            "https://terraform-docs.io/dl/v${TERRAFORM_DOCS_VERSION}/terraform-docs-v${TERRAFORM_DOCS_VERSION}-linux-amd64.tar.gz"
+          tar -xzf /tmp/terraform-docs.tar.gz -C /tmp terraform-docs
+          install -m 0755 /tmp/terraform-docs /usr/local/bin/terraform-docs
+        env:
+          TERRAFORM_DOCS_VERSION: 0.20.0
+
+      # Invoked once per module rather than with terraform-docs' own recursion:
+      # recursion also treats the repo root as a module and, finding no
+      # BEGIN_TF_DOCS markers there, overwrites the hand-written root README.
+      - name: Regenerate module docs
+        run: |
+          set -euo pipefail
+          for dir in modules/*/; do
+            terraform-docs --config="$PWD/.terraform-docs.yml" "$dir"
+          done
+
+      - name: Check docs are up to date
+        run: |
+          if ! git diff --quiet -- 'modules/*/README.md'; then
+            echo "::error title=terraform-docs::Module READMEs are stale. Run: for d in modules/*/; do terraform-docs --config=\"\$PWD/.terraform-docs.yml\" \"\$d\"; done"
+            git diff -- 'modules/*/README.md'
+            exit 1
+          fi
