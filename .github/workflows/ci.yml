@@ -68,7 +68,7 @@ jobs:
     runs-on: ubuntu-22.04-2cpu-8ram-75ssd
     steps:
       - uses: actions/checkout@v4
-      - uses: terraform-linters/setup-tflint@v4
+      - uses: terraform-linters/setup-tflint@v6
         with:
           tflint_version: v0.55.0
 
