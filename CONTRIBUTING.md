@@ -85,6 +85,6 @@ Do not include real Auth0 credentials, tenant domains, or client secrets in issu
 3. Tag: `git tag vX.Y.Z`
 4. Push: `git push origin main --tags`
 
-The Terraform Registry webhook picks up the tag and publishes the new version automatically. Tags must be valid semver (e.g. `v1.0.0`, `v1.1.0`). No `v` prefix variants - the Registry expects the `v` prefix.
+The Terraform Registry webhook picks up the tag and publishes the new version automatically. Tags must be valid semver (e.g. `v0.1.0`, `v0.2.0`). No `v` prefix variants - the Registry expects the `v` prefix.
 
 One tag releases every module in the repo, so a breaking change in any single module bumps the major version for all of them. Group the changelog entries by module (`### b2b-saas-starter`) so consumers can tell which changes affect them.
