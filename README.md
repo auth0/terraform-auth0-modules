@@ -18,7 +18,7 @@ is addressed with the `//modules/<name>` submodule syntax:
 ```hcl
 module "b2b_saas" {
   source  = "auth0/modules/auth0//modules/b2b-saas-starter"
-  version = "~> 1.0"
+  version = "~> 0.1"
 
   app_name        = "Acme"
   app_callbacks   = ["https://app.acme.com/callback"]
