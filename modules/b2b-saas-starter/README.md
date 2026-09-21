@@ -209,9 +209,7 @@ show the pre-verification value; re-run `terraform apply` to pick up `ready`.
 
 ---
 
-Generated with help from the ODF tooling. For support see the
-[ODF Service Desk](https://oktainc.atlassian.net/wiki/spaces/ESS/pages/701930944/Okta+Developer+Foundations+Service+Desk)
-or [#odf-servicedesk](https://okta.enterprise.slack.com/archives/C097LNQ2TFA).
+Open a [GitHub Issue](https://github.com/auth0/terraform-auth0-modules/issues) for bug reports, questions, or feature requests.
 
 <!-- BEGIN_TF_DOCS -->
 ## Resources
