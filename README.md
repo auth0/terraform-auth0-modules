@@ -18,7 +18,7 @@ is addressed with the `//modules/<name>` submodule syntax:
 ```hcl
 module "b2b_saas" {
   source  = "auth0/modules/auth0//modules/b2b-saas-starter"
-  version = "~> 1.0"
+  version = "~> 0.1"
 
   app_name        = "Acme"
   app_callbacks   = ["https://app.acme.com/callback"]
@@ -66,9 +66,7 @@ the release process. Changes are recorded in [CHANGELOG.md](CHANGELOG.md).
 
 ## Support
 
-Generated with help from the ODF tooling. For support see the
-[ODF Service Desk](https://oktainc.atlassian.net/wiki/spaces/ESS/pages/701930944/Okta+Developer+Foundations+Service+Desk)
-or [#odf-servicedesk](https://okta.enterprise.slack.com/archives/C097LNQ2TFA).
+Open a [GitHub Issue](https://github.com/auth0/terraform-auth0-modules/issues) for bug reports, questions, or feature requests.
 
 ## License
 

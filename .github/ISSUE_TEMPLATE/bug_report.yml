@@ -48,7 +48,7 @@ body:
     id: module_version
     attributes:
       label: Module version / commit
-      placeholder: "1.0.0 or abc1234"
+      placeholder: "0.1.0 or abc1234"
     validations:
       required: true
 
