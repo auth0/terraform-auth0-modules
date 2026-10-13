@@ -13,7 +13,7 @@ Every module shares a single release tag, so entries are grouped by module.
 
 ---
 
-## [0.1.0] - 2026-09-21
+## [1.0.0] - 2026-09-21
 
 Initial release.
 
